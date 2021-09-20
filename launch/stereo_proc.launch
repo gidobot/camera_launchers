@@ -1,0 +1,15 @@
+<launch>
+  <!-- Common parameters -->
+  <arg name="camera_name" default="camera" />
+
+  <group ns="$(arg camera_name)" >
+    <node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc">
+      <param name="approximate_sync" value="true"/>
+      <!-- <remap from="left/image_raw" to ="right/image_raw" /> -->
+      <!-- <remap from="left/camera_info" to ="right/camera_info" /> -->
+      <!-- <remap from="right/image_raw" to ="left/image_raw" /> -->
+      <!-- <remap from="right/camera_info" to ="left/camera_info" /> -->
+      <!-- <rosparam command="load" file="$(find camera_launchers)/cfg/stereo_proc_config.yaml" /> -->
+    </node>
+  </group>
+</launch>

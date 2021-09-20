@@ -1,0 +1,27 @@
+# serial: 17273547
+serial: 17273499
+
+camera_info_url: 'package://pointgrey_camera_driver/cfg/camera_info_left.yaml'
+
+video_mode: format7_mode0
+
+auto_exposure: false
+auto_shutter: false
+auto_gain: false
+auto_sharpness: true
+auto_white_balance: true
+format7_color_coding: raw8
+
+shutter_speed: 0.001
+gain: 10.0
+
+frame_rate: 3
+enable_trigger: true
+trigger_mode: mode0
+trigger_source: gpio0
+enable_trigger_delay: false
+
+packet_size: 1400
+packet_delay: 3000
+# packet_delay: 1600
+auto_packet_size: true

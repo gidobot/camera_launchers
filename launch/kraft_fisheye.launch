@@ -1,0 +1,44 @@
+<launch>
+  <!-- Common parameters -->
+  <arg name="camera_name" default="camera" />
+
+  <arg name="left_camera_serial" default="17273499" />
+  <arg name="left_camera_calibrated" default="1" />
+
+  <arg name="right_camera_serial" default="17273549" />
+  <arg name="right_camera_calibrated" default="1" />
+
+  <arg name="fisheye_camera_serial" default="16484868" />
+  <arg name="fisheye_camera_calibrated" default="0" />
+
+  <group ns="$(arg camera_name)" >
+    <group ns="fisheye" >
+      <node pkg="nodelet" type="nodelet" name="camera_nodelet_manager" args="manager" />
+
+      <!-- Both cameras are not loaded into one nodelet manager to avoid the namespacing issue. -->
+      <node pkg="nodelet" type="nodelet" name="camera_nodelet"
+            args="load pointgrey_camera_driver/PointGreyCameraNodelet camera_nodelet_manager" >
+        <rosparam command="load" file="$(find camera_launchers)/cfg/fisheye.yaml" />
+
+        <param name="frame_id" value="CameraFisheye" />
+
+        <!-- When unspecified, the driver will use the default framerate as given by the
+             camera itself. Use this parameter to override that value for cameras capable of
+             other framerates. -->
+
+        <!-- Use the camera_calibration package to create this file -->
+        <!-- <praam name="camera_info_url" if="$(arg fisheye_camera_calibrated)"
+               value="$(find camera_launchers)/cfg/camera_info_fisheye.yaml" /> -->
+      </node>
+
+      <node pkg="nodelet" type="nodelet" name="image_proc_debayer"
+          args="load image_proc/debayer camera_nodelet_manager">
+      </node>
+
+      <node pkg="image_view" type="image_view" name="fisheye" args="image:=image_raw" />
+    </group>
+
+
+
+  </group>
+</launch>

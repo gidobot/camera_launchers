@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>camera_launchers</name>
+  <version>0.13.4</version>
+  <description>Package to hold camera launch files.</description>
+
+  <maintainer email="gidobot@umich.edu">Gideon Billings</maintainer>
+
+  <license>BSD</license>
+
+  <author>Gideon Billings</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>pointgrey_camera_driver</depend>
+</package>

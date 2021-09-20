@@ -1,0 +1,26 @@
+serial: 17273549
+
+camera_info_url: 'package://pointgrey_camera_driver/cfg/camera_info_fisheye.yaml'
+
+video_mode: format7_mode0
+
+auto_exposure: false
+auto_shutter: false
+auto_gain: true
+auto_sharpness: true
+auto_white_balance: true
+format7_color_coding: raw8
+
+shutter_speed: 0.01
+gain: 20.0
+
+frame_rate: 5
+enable_trigger: false
+trigger_mode: mode0
+trigger_source: gpio0
+enable_trigger_delay: false
+
+packet_size: 1400
+packet_delay: 3000
+# packet_delay: 1600
+auto_packet_size: true
