@@ -1,0 +1,57 @@
+<launch>
+  <arg name="manager" default="stereo_proc"/>
+
+  <!-- Start a nodelet manager; the name must be unqualified here -->
+  <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager" />
+
+  <arg name="respawn" default="true" />
+  <arg name="left" default="/camera/left" />
+  <arg name="right" default="/camera/right" />
+  <arg name="approximate_sync" default="true" />
+
+  <arg     if="$(arg respawn)" name="bond" value="" />
+  <arg unless="$(arg respawn)" name="bond" value="--no-bond" />
+
+  <!-- Basic processing for left camera -->
+  <include file="$(find image_proc)/launch/image_proc.launch"
+     ns="$(arg left)">
+    <arg name="manager" value="$(arg manager)" />
+    <arg name="respawn" value="$(arg respawn)" />
+  </include>
+
+  <!-- Basic processing for right camera -->
+  <include file="$(find image_proc)/launch/image_proc.launch"
+     ns="$(arg right)">
+    <arg name="manager" value="$(arg manager)" />
+    <arg name="respawn" value="$(arg respawn)" />
+  </include>
+
+  <!-- Disparity image -->
+  <node pkg="nodelet" type="nodelet" name="disparity"
+        args="load stereo_image_proc/disparity $(arg manager) $(arg bond)"
+  respawn="$(arg respawn)" >
+    <param name="approximate_sync" value="$(arg approximate_sync)" />
+    <rosparam command="load" file="$(find camera_launchers)/cfg/stereo_proc_config.yaml" />
+  </node>
+
+  <!-- PointCloud2 -->
+  <node pkg="nodelet" type="nodelet" name="point_cloud2"
+        args="load stereo_image_proc/point_cloud2 $(arg manager) $(arg bond)"
+  respawn="$(arg respawn)" >
+    <param name="approximate_sync" value="$(arg approximate_sync)" />
+  </node>
+
+  <!-- Depth -->
+  <node pkg="nodelet" type="nodelet" name="depth"
+        args="load disparity_image_proc/depth_image $(arg manager) $(arg bond)"
+  respawn="$(arg respawn)" >
+    <param name="approximate_sync" value="$(arg approximate_sync)" />
+    <remap from="/right/camera_info" to="$(arg right)/camera_info"/>
+    <remap from="/left/camera_info" to="$(arg left)/camera_info"/>
+    <remap from="/left/image_rect_color" to="$(arg left)/image_rect_color"/>
+    <remap from="/disparity" to="/camera/disparity"/>
+    <remap from="/depth_image" to="$(arg left)/depth_image"/>    
+  </node>
+
+
+</launch>

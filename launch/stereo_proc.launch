@@ -5,11 +5,11 @@
   <group ns="$(arg camera_name)" >
     <node pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc">
       <param name="approximate_sync" value="true"/>
-      <!-- <remap from="left/image_raw" to ="right/image_raw" /> -->
-      <!-- <remap from="left/camera_info" to ="right/camera_info" /> -->
-      <!-- <remap from="right/image_raw" to ="left/image_raw" /> -->
-      <!-- <remap from="right/camera_info" to ="left/camera_info" /> -->
-      <!-- <rosparam command="load" file="$(find camera_launchers)/cfg/stereo_proc_config.yaml" /> -->
+      <rosparam command="load" file="$(find camera_launchers)/cfg/stereo_proc_config.yaml" />
     </node>
   </group>
+
+  <include file="$(find disparity_image_proc)/launch/kraft_depth.launch"/>
+
+  <node pkg="image_transport" type="republish" name="disparity_to_depth" args="raw in:=/camera/left/depth_image compressedDepth out:=/camera/left/depth_image"/>
 </launch>

@@ -1,0 +1,24 @@
+<launch>
+    <node pkg="nodelet" type="nodelet" args="standalone image_proc/resize" name="resize_img_left">
+	  <!-- remap input topics -->
+	  <remap from="image" to="/camera/left/image_raw"/>
+	  <remap from="camera_info" to="/camera/left/camera_info"/>
+	  <!-- remap output topics -->
+	  <remap from="resize_img_left/image" to="/camera/left/nui/image"/>
+	  <remap from="resize_img_left/camera_info" to="/camera/left/nui/camera_info"/>
+	  <param name="use_scale" type="int" value="1" />
+	  <param name="scale_width" type="double" value="0.5" />
+	  <param name="scale_height" type="double" value="0.5" />
+	</node>
+    <node pkg="nodelet" type="nodelet" args="standalone image_proc/resize" name="resize_img_right">
+	  <!-- remap input topics -->
+	  <remap from="image" to="/camera/right/image_raw"/>
+	  <remap from="camera_info" to="/camera/right/camera_info"/>
+	  <!-- remap output topics -->
+	  <remap from="resize_img_right/image" to="/camera/right/nui/image"/>
+	  <remap from="resize_img_right/camera_info" to="/camera/right/nui/camera_info"/>
+	  <param name="use_scale" type="int" value="1" />
+	  <param name="scale_width" type="double" value="0.5" />
+	  <param name="scale_height" type="double" value="0.5" />
+	</node>
+</launch>

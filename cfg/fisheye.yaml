@@ -4,7 +4,7 @@ camera_info_url: 'package://pointgrey_camera_driver/cfg/camera_info_fisheye.yaml
 
 video_mode: format7_mode0
 
-auto_exposure: false
+auto_exposure: true
 auto_shutter: false
 auto_gain: true
 auto_sharpness: true
@@ -14,8 +14,8 @@ format7_color_coding: raw8
 shutter_speed: 0.01
 gain: 20.0
 
-frame_rate: 5
-enable_trigger: false
+frame_rate: 3
+enable_trigger: true
 trigger_mode: mode0
 trigger_source: gpio0
 enable_trigger_delay: false

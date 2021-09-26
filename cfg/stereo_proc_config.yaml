@@ -2,7 +2,7 @@ P1: 200.0
 P2: 400.0
 correlation_window_size: 15
 disp12MaxDiff: 0
-disparity_range: 128
+disparity_range: 200
 fullDP: false
 id: 0
 min_disparity: 80

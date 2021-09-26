@@ -1,0 +1,67 @@
+<launch>
+
+  <node pkg="image_transport" type="republish" name="stereo_decompress" args="compressed in:=/nui/camera/left/image_raw out:=/camera/left/half/image_raw"/>
+  <!-- <node pkg="image_transport" type="republish" name="stereo_decompress" args="compressed in:=/nui/camera/right/image_raw out:=/camera/right/half/image_raw"/> -->
+  <node pkg="image_transport" type="republish" name="stereo_decompress" args="compressed in:=/nui/camera/fisheye/image_raw out:=/camera/fisheye/half/image_raw"/>
+  <!-- <node pkg="image_transport" type="republish" name="stereo_decompress" args="compressed in:=/camera/left/image_rect_color out:=/camera/left/half/image_raw"/> -->
+
+  <group ns="/nui_bridge/left" >
+	  <node pkg="nodelet" type="nodelet" name="nui_bridge_manager" args="manager" />
+	  <node pkg="nodelet" type="nodelet" name="image_debayer"
+	        args="load image_proc/debayer nui_bridge_manager">
+	  	<remap from="image_raw" to="/camera/left/half/image_raw"/>
+	  </node>
+
+	  <node pkg="nodelet" type="nodelet" name="image_resize"
+	        args="load image_proc/resize nui_bridge_manager">
+	    <remap from="image" to="/nui_bridge/left/image_color"/>
+	    <remap from="image_resize/image" to="/camera/left/image_color"/>
+	    <param name="use_scale" value="true"/>
+	    <param name="scale_height" value="2.0"/>
+	    <param name="scale_width" value="2.0"/>
+	  </node>
+  </group>
+
+  <group ns="/nui_bridge/right" >
+	  <node pkg="nodelet" type="nodelet" name="nui_bridge_manager" args="manager" />
+	  <node pkg="nodelet" type="nodelet" name="image_debayer"
+	        args="load image_proc/debayer nui_bridge_manager">
+	  	<remap from="image_raw" to="/camera/right/half/image_raw"/>
+	  </node>
+
+	  <node pkg="nodelet" type="nodelet" name="image_resize"
+	        args="load image_proc/resize nui_bridge_manager">
+	    <remap from="image" to="/nui_bridge/right/image_color"/>
+	    <remap from="image_resize/image" to="/camera/right/image_color"/>
+	    <param name="use_scale" value="true"/>
+	    <param name="scale_height" value="2.0"/>
+	    <param name="scale_width" value="2.0"/>
+	  </node>
+  </group>
+
+  <group ns="/nui_bridge/fisheye" >
+	  <node pkg="nodelet" type="nodelet" name="nui_bridge_manager" args="manager" />
+	  <node pkg="nodelet" type="nodelet" name="image_debayer"
+	        args="load image_proc/debayer nui_bridge_manager">
+	  	<remap from="image_raw" to="/camera/fisheye/half/image_raw"/>
+	  </node>
+
+	  <node pkg="nodelet" type="nodelet" name="image_resize"
+	        args="load image_proc/resize nui_bridge_manager">
+	    <remap from="image" to="/nui_bridge/fisheye/image_color"/>
+	    <remap from="image_resize/image" to="/camera/fisheye/image_color"/>
+	    <param name="use_scale" value="true"/>
+	    <param name="scale_height" value="2.0"/>
+	    <param name="scale_width" value="2.0"/>
+	  </node>
+  </group>
+
+  <include file="$(find ros_image_utils)/launch/yaml_publisher.launch"/>
+  <include file="$(find camera_launchers)/launch/stereo_proc.launch"/>
+  <include file="$(find easy_handeye)/launch/publish.launch"/>
+
+  <!-- <group ns="/camera/left" >
+    <node pkg="image_proc" type="image_proc" name="image_proc"/>
+  </group> -->
+
+</launch>

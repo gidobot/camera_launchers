@@ -1,0 +1,17 @@
+<launch>
+
+    <arg name="record" default="true" />
+    <arg name="logname" default="ocoms_bag" />
+    <arg name="logpath" default="/media/kraft/af7cd17b-9563-477c-be1d-89aa6b8aebb6/data/Nautilus2021/ocoms_dive_09262021"/> 
+
+    <!-- <node pkg="rosbag" type="record" name="rosbag_record_kraft" output="screen"
+       args="record -b 3000 -o $(arg logpath)/$(arg logname) /kraft_arm/joint_feedback_pots /tf /tf_static /kraft_arm/move_group/display_planned_path /kraft_arm/ee_pose /kraft/joint_states -e /(.*)estimated_odometry /(.*)estimated_transform /(.*)raw_transform"
+       if="$(arg record)" /> -->
+
+    <node pkg="rosbag" type="record" name="rosbag_record_kraft" output="screen"
+       args='record -o $(arg logpath)/$(arg logname) -a -x "/nui/(.*)"'
+       if="$(arg record)" /> 
+
+    <!-- <node pkg="rosbag" type="record" name="rosbag_record_kraft" output="screen"
+       args="record -o $(arg logpath)/$(arg logname) /camera/fisheye/image_raw"/> -->
+</launch>
